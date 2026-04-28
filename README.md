@@ -1,6 +1,6 @@
 # Logistics Cost Analytics Accelerator
 
-AI-powered logistics cost intelligence platform built natively on Snowflake with Medallion Architecture and Cortex AI.
+AI-powered logistics cost intelligence platform built as a Snowflake Native App with Cortex AI.
 
 ## Overview
 
@@ -10,7 +10,6 @@ End-to-end logistics cost visibility: Cost Per Shipment, Cost Per Mile, Fuel Eff
 
 - **8 Analytics Tabs** — Cost Overview, Cost Breakdown, Route Analysis, Fuel & Surcharges, Cost Variance, Optimization, Trends, AI Predictions
 - **20+ KPIs** — Total logistics cost, cost per shipment, cost per mile, fuel efficiency, margin per route, OTIF rate, cost efficiency score
-- **Medallion Architecture** — Bronze (raw), Silver (cleansed SCD2), Gold (aggregated KPI mart), Semantic (VW KPI views)
 - **Dynamic Filters** — Carrier, transport mode, year, month — all cross-tab
 - **AI Chat** — Ask questions about your logistics cost data using Snowflake Cortex (mistral-large2)
 - **Cost Variance** — Actual vs budget analysis with over/under budget detection
@@ -223,21 +222,20 @@ All AI features use **Snowflake Cortex** (`COMPLETE` with `mistral-large2`). RAG
 - AI processing occurs entirely within Snowflake Cortex
 - Only SELECT privileges requested
 
-## Architecture
+## Application Architecture
 
-| Layer | Schema | Purpose |
-|-------|--------|---------|
-| Bronze Raw | BRONZE_RAW | Raw ingestion (append-only) |
-| Bronze Quarantine | BRONZE_QUARANTINE | Bad records diverted |
-| Silver Cleansed | SILVER_CLEANSED | SCD Type 2, typed dims/facts |
-| Gold Analytics | GOLD_ANALYTICS | Pre-aggregated KPI mart |
-| Semantic | SEMANTIC | VW KPI views for dashboards |
-| Governance | GOVERNANCE | Audit, DQ, masking, tags |
-| Staging | STAGING | Internal stages/file formats |
-| App | APP | Streamlit objects |
+The installed application contains 3 schemas:
+
+| Schema | Purpose |
+|--------|---------|
+| APP_DATA | Reference-backed views over your bound tables |
+| APP_SCHEMA | Streamlit dashboard |
+| CONFIG | Reference callback and view setup |
+
+The consumer is responsible for providing the 16 pre-aggregated KPI tables/views listed above. The application provides visualization, filtering, tier classification, and AI-powered Q&A over that data.
 
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 6.0.0 | 2026-04 | Initial Marketplace release — Medallion Architecture, 8 tabs, Cortex AI |
+| 6.0.0 | 2026-04 | Initial Marketplace release — 8 tabs, 20+ KPIs, Cortex AI |
